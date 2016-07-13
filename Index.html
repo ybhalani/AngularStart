@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="AngularSelf/Js/angular/angular.js"></script>
+     <script src="AngularSelf/Js/angular/angular.min.js"></script>
+     <script src="AngularSelf/Js/jquery/jquery-1.12.0.js"> </script>
+     <script src="AngularSelf/Js/ui-router/routing.js"> </script>
+     <script src="AngularSelf/Js/app.js"> </script>
+    <script src="AngularSelf/Js/config.js"> </script>
+    <script src="AngularSelf/Js/controllers.js"> </script>
+    <script src="AngularSelf/Js/filters.js"> </script>
+    <script src="AngularSelf/Js/service.js"> </script>
+    <script src="AngularSelf/Js/directives.js"> </script>
+    <script src="AngularSelf/Js/translation.js"> </script>
+    <script src="AngularSelf/Js/inspinia.js"> </script>
+    <style>
+        #tableID{
+            border-radius:3px;
+            border-color: darkgreen;
+            border-width: 5px;
+            cell-column-width:5px;
+            cell-padding:2px;
+            column-width: 2px;
+
+        }
+    </style>
+</head>
+<body ng-app="myModule" >
+<div ng-controller="myController">
+<div><h2>Data-Binding</h2>
+<p>First Name={{employee.firstName}}</p>
+<p>Last Name={{employee.lastName}}</p>
+<p>Gender={{employee.gender}}</p>
+</div>
+<p>{{message}}</p>
+<div>
+    <h2>Two Way Data Binding</h2>
+    <table border="1" style="border-collapse: collapse">
+        <tr>
+            <td>First Name</td>
+            <td><input type="text" ng-model="student.firstName"></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input type="text" ng-model="student.lastName"></td>
+        </tr>
+        <tr>
+            <td>Phone Number</td>
+            <td><input type="number" ng-model="student.phoneNumber"></td>
+        </tr>
+    </table>
+    <br><br>
+    <table >
+        <tr>
+            <td>First Name</td>
+            <td> {{student.firstName}}</td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td>{{student.lastName}}</td>
+        </tr>
+        <tr>
+            <td>Phone Number</td>
+            <td>{{student.phoneNumber}}</td>
+        </tr>
+    </table>
+</div>
+<div><h2>ng-repeat Directive</h2>
+<table border="1" style="border-collapse: collapse" id="tableID" >
+    <thead>
+    <tr>
+        <th>Country</th>
+        <th>Alternative_Name</th>
+        <th>Fifa_Code</th>
+        <th>Group_Id</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="x in records">
+        <td>{{x.country}}</td>
+        <td>{{x.alternate_name}}</td>
+        <td>{{x.fifa_code}}</td>
+        <td>{{x.group_id}}</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div><h2>Nested ng-repeat directive</h2>
+<ul>
+    <li ng-repeat="country in countries">
+    {{country.name}}...Index ={{$index}}
+    <ul>
+        <li ng-repeat="city in country.cities" >
+            {{city.name}}...Parent Index = {{ $parent.$index }}, Index = {{ $index }}
+        </li>
+    </ul>
+    </li>
+</ul>
+</div>
+<span my-first-directive></span>
+<my-first-directive></my-first-directive>
+<div ng-controller="contactController"><h2>Saving And Displaying data</h2>
+    <form>
+        <p>Name<input type="text" ng-model="newContact.name"></p>
+        <p>Email<input type="text" ng-model="newContact.email"></p>
+        <p>Phone<input type="text" ng-model="newContact.phone"></p>
+        <input type="hidden" ng-model="newContact.id">
+    <input type="button" value="Save" ng-click="saveContact()">
+    </form><br>
+
+    <table border="2" style="border-collapse:collapse ">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="technology in technologies">
+            <td>{{}}</td>
+            <td>{{}}</td>
+            <td>{{}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+</div>
+
+
+<h2>Handling Event In AngularJs</h2>
+<table border="2" style="border-collapse:collapse ">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Likes</th>
+        <th>DisLikes</th>
+        <th>Like/Dislike</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="technology in technologies">
+        <td>{{technology.name}}</td>
+        <td>{{technology.likes}}</td>
+        <td>{{technology.dislikes}}</td>
+        <td>
+            <input type="button" ng-click="incrementLikes(technology)" value="Like">
+            <input type="button" ng-click="incrementDisLikes(technology)" value="DisLike">
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+<br><br>
+<div><h2>Filters In AngularJs</h2>
+  <b>Rows To Display</b>::  <input type="number" step="1" min="0" max="5" ng-model="rowLimit">
+    <br><br>
+    <table border="2" style="border-collapse:collapse ">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Salery</th>
+            <th>Salery</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="employee in employeesOf | limitTo:rowLimit">
+            <td>{{employee.name | uppercase}}</td>
+            <td>{{employee.dateOfBirth | date:"dd/MM/yyyy"}}</td>
+            <td>{{employee.gender |lowercase}}</td>
+            <td>{{employee.salary | number:2}}</td>
+            <td>{{employee.salary | currency }}</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+  <div> <h2>Sorting Data,Order BY</h2>
+<b>Order By::</b> <select ng-model="sortColumn">
+          <option value="choose">Please Choose</option>
+          <option value="name">Name ASC</option>
+          <option value="-name">Name DESC</option>
+          <option value="gender">Gender ASC</option>
+          <option value="-gender">Gender DESC</option>
+          <option value="dateOfBirth">DateOfBirth ASC</option>
+          <option value="-dateOfBirth">DateOfBirth DESC</option>
+          <option value="salary">Salery ASC</option>
+          <option value="-salary">Salery DESC</option>
+      </select><br><br>
+    <table border="2" style="border-collapse:collapse ">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Salery</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="employee in employeesOf | orderBy:sortColumn">
+            <td>{{employee.name }}</td>
+            <td>{{employee.dateOfBirth | date:"dd/MM/yyyy"}}</td>
+            <td>{{employee.gender}}</td>
+            <td>{{employee.salary }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h2>Sort Rows By Table Header(Bi-Directional Sort)</h2>
+</div>
+<div>
+    <h2>Search Filter In AngularJs</h2>
+  <b>Search::</b>  <input type="search" placeholder="Search Here" ng-model="searchText"><br><br>
+    <table border="2" style="border-collapse:collapse ">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Capitol</th>
+            <th>Currency</th>
+            <th>Population</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="country in contriesName |filter:searchText">
+            <td>{{country.name }}</td>
+            <td>{{country.capitol}}</td>
+            <td>{{country.currency}}</td>
+            <td>{{country.population }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h2>Filter By Multiple Properties</h2>
+</div>
+<div>
+    <h2>Creating Custom Filter In AngularJs</h2>
+    <table border="2" style="border-collapse:collapse ">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Salery</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="employee in employeesOf">
+            <td>{{employee.name }}</td>
+            <td>{{employee.dateOfBirth | date:"dd/MM/yyyy"}}</td>
+            <td>{{employee.gender | gender}}</td>
+            <td>{{employee.salary }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div></div>
+    <div ng-controller="contactController"><h2>ng-hide AND ng-show directives</h2>
+        <input type="checkbox" ng-model="hideCurrancy">Hide Currancy
+        <table border="2" style="border-collapse:collapse ">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Capitol</th>
+                <th ng-hide="hideCurrancy">Currency</th>
+                <th>Population</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="country in contriesName">
+                <td>{{country.name }}</td>
+                <td>{{country.capitol}}</td>
+                <td ng-hide="hideCurrancy">{{country.currency}}</td>
+                <td>{{country.population }}</td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+    <div ng-controller="contactController">
+    <h2>ng-include directive</h2>
+        <select ng-model = "countryView">
+            <option value="Template/countryView.html">Table View</option>
+            <option value="Template/countryViewList.html">List View</option>
+        </select><br><br>
+        <div ng-include="countryView"></div>
+
+</div>
+<!--<div ng-controller="httpController">
+   -- <h2>$http Service</h2>
+    <table border="1" style="border-collapse: collapse" id="tableID" >
+        <thead>
+        <tr>
+            <th>Country</th>
+            <th>Alternative_Name</th>
+            <th>Fifa_Code</th>
+            <th>Group_Id</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="x in getCountries">
+            <td>{{x.country}}</td>
+            <td>{{x.alternate_name}}</td>
+            <td>{{x.fifa_code}}</td>
+            <td>{{x.group_id}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>-->
+<div ng-controller="serviceController">
+    <h2>Creating Custom Services In AngularJs</h2>
+    <table border="1">
+        <tr>
+            <td>Your String</td>
+            <td><input type="text" ng-model="input" /> </td>
+        </tr>
+        <tr>
+            <td>Result</td>
+            <td><input type="text" ng-model="output" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="button" ng-click="transformString(input)"
+                       value="Process String" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <h2>AngularJs AnchorScroll Example</h2>
+    <a href="Template/index2.html">Click To Go to Another Page</a>
+</div>
+<div>
+    <h2> AngularJs AnchorScroll With DataBase Data</h2>
+</div>
+
+<div>
+    <h2>AngularJs Routing</h2>
+</div>
+<div>
+    <h2>AngularJs Layout Template</h2>
+</div>
+<div>
+    <h2>AngularJs Partial Templates</h2>
+</div>
+<script>
+ var newApp = angular.module("myNewModule",[])
+    newApp.controller("myNewModulecontroller",[function(){
+        var self = this;
+        self.tab ='first';
+        self.open = function(tab){
+            self.tab = tab
+        }
+
+    }])
+ newApp.controller("myNewModuleTwocontroller",[function(){
+     var self = this;
+     self.tab ='first';
+     self.open = function(tab){
+         self.tab = tab
+     }
+
+ }])
+</script>
+
+</body>
+</html>

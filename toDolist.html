@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Title</title>
+    <script src="AngularSelf/Js/angular/angular.js"></script>
+    <script src="AngularSelf/Js/angular/angular.min.js"></script>
+    <script src="AngularSelf/Js/jquery/jquery-1.12.0.js"> </script>
+    <script src="AngularSelf/Js/ui-router/routing.js"> </script>
+    <!--script src="//ajax.googleapis.com/ajax/libs/angularjs/X.Y.Z/angular-route.js"></script>-->
+    <style>
+        h1{
+            text-align: center;
+        }
+        p{
+            margin-left:40% ;
+        }
+
+     span.done-true{
+         color: gray;
+         text-decoration:line-through;
+     }
+
+    </style>
+</head>
+<body ng-app="todoListApp">
+<div ng-controller='todoController'>
+    <h1>ToDo List</h1>
+<p><input type="text" ng-model="task" ng-keyup="searchEnter()" style="display: block; width: 300px; height: 50px"></p>
+    <ul>
+        <li ng-repeat="onetask in tasks">
+            <input type="checkbox" ng-model="onetask.status">
+            <span class="done-{{onetask.status}}" ng-model="onetask.taskMessege" >
+
+        {{onetask.taskMessege}}</span></li>
+
+    </ul>
+</div>
+<script>
+    var todoApp = angular.module('todoListApp',[]);
+    todoApp.controller('todoController',function($scope){
+            $scope.tasks = [];
+        var todoData = localStorage["tasklist"];
+        if(todoData!== undefined){
+            $scope.tasks = JSON.parse(todoData);
+        }
+                $scope.searchEnter = function() {
+                    if(event.which == 13 && $scope.task != ""){
+                       $scope.addTask();
+                    }
+                };
+        $scope.addTask = function(){
+        $scope.tasks.push({"taskMessege": $scope.task, "status": false})
+            $scope.task = "";
+            localStorage["tasklist"] =JSON.stringify($scope.tasks)
+
+        }
+
+
+    });
+
+</script>
+</body>
+</html>

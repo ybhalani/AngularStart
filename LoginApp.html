@@ -1,0 +1,148 @@
+<html>
+<head>
+    <title>Title</title>
+    <script src="AngularSelf/Js/angular/angular.js"></script>
+    <script src="AngularSelf/Js/angular/angular.min.js"></script>
+    <script src="AngularSelf/Js/jquery/jquery-1.12.0.js"> </script>
+    <script src="AngularSelf/Js/ui-router/routing.js"> </script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/X.Y.Z/angular-route.js"></script>
+    <!--<script src="AngularSelf/Js/app.js"> </script>-->
+    <!-- <script src="AngularSelf/Js/config.js"> </script>-->
+    <!-- <script src="AngularSelf/Js/controllers.js"> </script>-->
+    <!--<script src="AngularSelf/Js/filters.js"> </script>-->
+    <!-- <script src="AngularSelf/Js/service.js"> </script>-->
+    <!-- <script src="AngularSelf/Js/directives.js"> </script>-->
+     <!--<script src="AngularSelf/Js/translation.js"> </script>-->
+     <!--<script src="AngularSelf/Js/inspinia.js"> </script>-->
+    <!-- <script src="//code.angularjs.org/1.3.0-rc.2/angular-resource.min.js"></script>-->
+
+     <style>
+         h4 {
+             margin-left:300px;
+
+         }
+         #top{
+             margin-top: 100px;
+         }
+         #loginButton{
+             margin-left: 450px;
+         }
+         #username,#password{
+               height: 30px;
+             width: 250px;
+         }
+         #loginButton{
+             width:100px;
+             height:30px;
+             border-radius: 10px;
+         }
+         h1{
+             margin-left:500px;
+         }
+     </style>
+ </head>
+ <body ng-app="LoginApp">
+ <h1>Please Sign-Up Here</h1>
+ <div ng-view></div>
+ <input type="text" placeholder="Search All" ng-model="searchBox.$">
+ <input type="text" placeholder="Search Country" ng-model="searchBox.country">
+ <input type="text" placeholder="Search FifaCode" ng-model="searchBox.fifa_code">
+ <input type="text" placeholder="Search Id" ng-model="searchBox.group_id">
+ <div ng-controller="peopleController">
+     <h2>FIFA Participating Countries</h2>
+     <table border="1" >
+             <thead>
+             <tr>
+                 <th>Country</th>
+                 <th>Alternative_Name</th>
+                 <th>Fifa_Code</th>
+                 <th>Group_Id</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="x in countries | filter:searchBox">
+                 <td>{{x.country}}</td>
+                 <td>{{x.alternate_name}}</td>
+                 <td>{{x.fifa_code}}</td>
+                 <td>{{x.group_id}}</td>
+             </tr>
+             </tbody>
+         </table>
+
+   </div></br>
+ <div ng-controller="changeController">
+ <input type="text" ng-model="myText">
+ <p>You Changed the value {{counter}} Times.</p>
+     <p>Custom Filters</p>
+     Number<input type="text" ng-model="number">
+    Base <input type="text" ng-model="base">
+
+ </div>
+<div class=""i-am-custom-directive></div>
+<i-am-custom-directive></i-am-custom-directive>
+ <div i-am-custom-directive></div>
+ <script>
+ var loginApp = angular.module("LoginApp",["ngRoute"]);
+
+ loginApp.config(function($routeProvider){
+     $routeProvider
+             .when("/", {
+                 templateUrl:"Template/login.html",
+                 controller:'loginController'
+             })
+             .when('/dashboard',{
+                 templateUrl:"Template/dashboard.html",
+                 controller:"dashController"
+             })
+             .otherwise({
+                 redirectTo: "/"
+             });
+ });
+ loginApp.controller("loginController",["$scope","$location",function($scope,$location){
+         $scope.submit = function(){
+             $scope.uname= $scope.username;
+             $scope.pswd= $scope.password;
+             if($scope.username=='admin' && $scope.password=='admin'){
+                 $location.path('/dashboard');
+             }
+             else{
+                 alert("Please Fill The Right Info");
+             }
+         }
+
+     }])
+ loginApp.controller("dashController",["$scope","$location",function($scope,$location){
+     $scope.message = "Welcome User";
+ }])
+//http controller
+ loginApp.controller("peopleController",["$scope","$http",function($scope,$http){
+    $http.get('http://localhost:63342/AngularSelfPractice/MockData/mockData.json')
+            .success(function(responseData){
+              $scope.countries = responseData.records;
+
+            });
+ }])
+//change controller
+ loginApp.controller("changeController",["$scope",function($scope){
+     $scope.counter = 0;
+     $scope.$watch("myText",function(newValue,oldValue){
+         $scope.counter++;
+     });
+
+ }]);
+ loginApp.filter("iamCustomFilter",function(){
+
+     });
+  //custom directives
+ loginApp.directive("iAmCustomDirective",function(){
+     return{
+         rectrict:"EA",
+         template:"<h1>hello world from custom directive</h1>",
+         link: function(scope,elememt,attr){
+
+         }
+     };
+ });
+ </script>
+ </body>
+ </html>
